@@ -1,0 +1,16 @@
+upstream backend {
+    server apache.local:8081;     # Apache
+    server tomcat.local:8080;   # Tomcat
+}
+
+server {
+    listen 81;
+    server_name _;
+
+    location / {
+        proxy_pass http://backend;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+
